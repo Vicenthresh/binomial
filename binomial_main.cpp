@@ -1,8 +1,29 @@
 #include "binomial.h"
+#include "binomial_fast.hpp"
+#include "binomial_slow.hpp"
+
+// The Binomial template argument must be a class that implements the
+// `binomial` concept. See binomial.h.
+template <typename Binomial>
+bool go() {
+	long n, k;
+	printf("Input n: ");
+	if (scanf("%ld", &n) != 1) {
+		printf("Bye.\n");
+		return false;
+	}
+	printf("Input k: ");
+	if (scanf("%ld", &k) != 1) {
+		printf("Bye.\n");
+		return false;
+	}
+	printf("Result: ");
+	printf("%ld\n\n", Binomial::binomial(n, k));
+	return true;
+}
 
 int main(/*int argc, char ** argv*/) {
 	while (1) {
-		binomial_t * bin;
 		printf("Choose a binomial implementation.\n"
 		       "1. Slow\n"
 		       "2. Fast\n"
@@ -13,29 +34,12 @@ int main(/*int argc, char ** argv*/) {
 			break;
 		}
 		if (strat == 1) {
-			bin = get_binomial_slow();
+			if (!go<binomial_slow>()) break;
 		} else if (strat == 2) {
-			bin = get_binomial_fast();
+			if (!go<binomial_fast>()) break;
 		} else {
 			printf("Unknown strategy.\n");
-			continue;
 		}
-		long n, k;
-		printf("Input n: ");
-		if (scanf("%ld", &n) != 1) {
-			printf("Bye.\n");
-			delete bin;
-			break;
-		}
-		printf("Input k: ");
-		if (scanf("%ld", &k) != 1) {
-			printf("Bye.\n");
-			delete bin;
-			break;
-		}
-		printf("Result: ");
-		printf("%ld\n\n", bin->binomial(n, k));
-		delete bin;
 	}
 	return 0;
 }

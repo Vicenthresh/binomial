@@ -4,27 +4,17 @@
 #include <cstdlib>
 #include <cstdio>
 
-// `binomial_t` is the type of a binomial strategy.
-class binomial_t {
-public:
-	virtual long binomial(long n, long k) = 0;
+// The `binomial` concept.
+// A class that implements the `binomial` concept shall define a static method
+// named `binomial` with the signature
+//     static long binomial(long n, long k);
 
-	// Base classes with virtual methods MUST have a virtual destructor.
-	virtual ~binomial_t() {}
-};
+// The slow binomial strategy is defined in binomial_slow.hpp.
+// Implements the `binomial` concept.
+class binomial_slow;
 
-// The slow binomial strategy is defined in binomial_slow.cpp.
-binomial_t * get_binomial_slow();
-
-// The fast binomial strategy is defined in binomial_fast.cpp.
-binomial_t * get_binomial_fast();
-
-// Only static functions may be defined (rather than declared) in header files.
-// The linker does not care share static function definitions between
-// compilation units.
-static inline void error(const char * message) {
-	printf("An error occurred: %s\n", message);
-	exit(1);
-}
+// The fast binomial strategy is defined in binomial_fast.hpp.
+// Implements the `binomial` concept.
+class binomial_fast;
 
 #endif /*__BINOMIAL_H__*/

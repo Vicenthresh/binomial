@@ -1,4 +1,4 @@
-OBJS := binomial_main.o binomial_slow.o binomial_fast.o
+OBJS := binomial_main.o
 EXEC := binomial
 CXXFLAGS := -g -Wall -Wextra
 
