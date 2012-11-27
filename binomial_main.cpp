@@ -2,7 +2,7 @@
 
 int main(/*int argc, char ** argv*/) {
 	while (1) {
-		binomial_fn fn;
+		binomial_t * bin;
 		printf("Choose a binomial implementation.\n"
 		       "1. Slow\n"
 		       "2. Fast\n"
@@ -13,9 +13,9 @@ int main(/*int argc, char ** argv*/) {
 			break;
 		}
 		if (strat == 1) {
-			fn = get_binomial_slow();
+			bin = get_binomial_slow();
 		} else if (strat == 2) {
-			fn = get_binomial_fast();
+			bin = get_binomial_fast();
 		} else {
 			printf("Unknown strategy.\n");
 			continue;
@@ -24,15 +24,18 @@ int main(/*int argc, char ** argv*/) {
 		printf("Input n: ");
 		if (scanf("%ld", &n) != 1) {
 			printf("Bye.\n");
+			delete bin;
 			break;
 		}
 		printf("Input k: ");
 		if (scanf("%ld", &k) != 1) {
 			printf("Bye.\n");
+			delete bin;
 			break;
 		}
 		printf("Result: ");
-		printf("%ld\n\n", fn(n, k));
+		printf("%ld\n\n", bin->binomial(n, k));
+		delete bin;
 	}
 	return 0;
 }
