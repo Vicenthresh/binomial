@@ -1,8 +1,8 @@
 #ifndef __BINOMIAL_H__
 #define __BINOMIAL_H__
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 
 // `binomial_t` is the type of a binomial strategy.
 class binomial_t {
