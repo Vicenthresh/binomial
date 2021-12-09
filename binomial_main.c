@@ -9,7 +9,8 @@ int main(/*int argc, char ** argv*/) {
 		printf("Choose a binomial implementation.\n"
 		       "1. Slow\n"
 		       "2. Fast\n"
-		       "Input [12]: ");
+			   "3. For\n"
+		       "Input [123]: ");
 		int strat;
 		if (scanf("%d", &strat) != 1) {
 			printf("Bye.\n");
@@ -21,6 +22,9 @@ int main(/*int argc, char ** argv*/) {
 		} else if (strat == 2) {
 			start = clock();
 			fn = get_binomial_fast();
+		} else if (strat == 3) {
+			start = clock();
+			fn = get_binomial_for();
 		} else {
 			printf("Unknown strategy.\n");
 			continue;
@@ -40,7 +44,7 @@ int main(/*int argc, char ** argv*/) {
      	cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 		printf("Result: ");
 		printf("%ld\n\n", fn(n, k));
-		printf("Time: %f\n\n",cpu_time_used);
+		printf("Time: %lf\n\n",cpu_time_used);
 	}
 	return 0;
 }

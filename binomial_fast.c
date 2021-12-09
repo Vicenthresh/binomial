@@ -4,6 +4,8 @@
 static long binomial(long n, long k) {
 	if (k == 0 || n == k) return 1;
 
+	if (k > n-k) k = n-k; // take advantage of symmetry 
+
 	if (n > k && k > 0) return binomial(n, k-1)*(n-k+1)/k;
 
 	return 0;
