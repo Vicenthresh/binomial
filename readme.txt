@@ -11,4 +11,4 @@ La segunda fila, el numero uno
 La tercera fila, la cantidad de digitos del numero dos
 La cuarta fila, el numero dos
 
-Existe el archivo datos.txt para mayor claridad
+Existe el archivo datos.txt para mayor claridad.
