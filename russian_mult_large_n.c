@@ -32,19 +32,52 @@ char isNumber(char c);
  */
 int main(int argc, char **argv) {
 
-    unsigned int len1, len2;
+    unsigned int len1 = 0, len2 = 0;
     lnumber n1, n2, result;
+    int c;
 
 	if ( argc == 1 ) {
+        c = getchar();
+        while(c != '\n'){
+            len1 = len1 + 1;
+            c = getchar();
+        }
+        len1 = len1 - 1;
 
-        scanf("%d",&len1);
+        while(c != EOF){
+            len2 = len2 + 1;
+            c = getchar();
+        }
+        len2 = len2 - 1;
+
+        rewind(stdin);
+
+        n1.array_length = len1;
+        n1.current_array_length = len1;
+        char num1[len1];
+        scanf("%s", num1); 
+        n1.n = num1;
+        
+        n2.array_length = len2;
+        n2.current_array_length = len2;
+        char num2[len2];
+        scanf("%s", num2); 
+        puts(num2);
+        n2.n = num2;
+
+        printf("\n\n%s x %s =  ", n1.n, n2.n);
+        result = LargeRussianMult(n1, n2);
+        PrintNumber(result);
+        printf("\n\n");
+
+        /*scanf("%u",&len1);
         n1.array_length = len1;
         n1.current_array_length = len1;
         char num1[len1];
         scanf("%s", num1); 
         n1.n = num1;
 
-        scanf("%d",&len2);
+        scanf("%u",&len2);
         n2.array_length = len2;
         n2.current_array_length = len2;
         char num2[len2];
@@ -54,7 +87,7 @@ int main(int argc, char **argv) {
         printf("\n\n%s x %s =  ", n1.n, n2.n);
         result = LargeRussianMult(n1, n2);
         PrintNumber(result);
-        printf("\n\n");
+        printf("\n\n");*/
   	}
    	else
     	Usage(argv[0]);
