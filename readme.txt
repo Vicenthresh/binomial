@@ -9,4 +9,4 @@ El archivo de texto file.txt debe tener la siguiente estructura:
 La primera fila, el numero uno
 La segunda fila, el numero dos
 
-Existe el archivo datos.txt para mayor claridad
+Existe el archivo datos.txt para mayor claridad.
