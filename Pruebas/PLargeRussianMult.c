@@ -34,6 +34,7 @@ typedef struct aux_div
 lnumber InitLargeNumber(char *num, int array_length, int current_array_length, int num_length);
 void Usage(char *message);
 void PrintNumber(lnumber number);
+lnumber LRM3(lnumber n1, lnumber n2, long p);
 lnumber LargeRussianMult1(lnumber n1, lnumber n2, int free1, int free2);
 lnumber LargeRussianMult2(lnumber n1, lnumber n2, int free1, int free2);
 
@@ -63,16 +64,11 @@ lnumber LargeTwoExpBySquaring(long n);
  */
 int main(int argc, char **argv) {
     
-    long k, n, p, i, s, rem, j, flag = 0;
-    long total_steps, last_steps = 0;
-
+    long p, runs, i;
+    double ptime;
     long len1 = 0, len2 = 0, c;
-    lnumber n1, n2, result, result2, x_aux, y_aux, acum_pow2;
+    lnumber n1, n2, result;
 
-    pthread_t *thread;
-    pthread_attr_t attribute;
-    struct Message **m;
-    void *exit_status; 
     
     if ( argc == 2 ) {
 
@@ -100,7 +96,81 @@ int main(int argc, char **argv) {
         scanf("%s", num2);
         n2 = InitLargeNumber(num2, len2, len2, len2);
 
-        total_steps = TotalSteps(n1);
+        runs = 1000;
+        p = 2;
+        printf("[");
+        while(p <= 12){
+            clock_t cl = clock();
+            for(i = 0; i < runs; i++){
+
+                result = LRM3(n1,n2,p);
+
+            }
+            ptime = (((double)clock()-cl)/CLOCKS_PER_SEC)/(double)runs;
+            printf("%lf,", ptime);
+            //PrintNumber(result);
+            free(result.n);
+            p = p + 2;
+        }
+        printf("]\n");
+        
+    }
+   else
+      Usage(argv[0]);
+}
+
+
+lnumber InitLargeNumber(char *num, int array_length, int current_array_length, int num_length){
+    
+    int i, j, k = 0;
+    lnumber number;
+    number.n = calloc(array_length,sizeof(char)); // allocate memory
+    number.array_length = array_length;
+    number.current_array_length = current_array_length;
+
+    for(i = number.array_length-1, j = num_length-1, k; k < current_array_length; i = i - 1, j = j - 1, k = k + 1)
+            number.n[i] = num[j];
+
+    return number;
+}
+
+/*
+ * 
+ */
+void Usage(char *message) {
+  
+    printf("\nUsage: %s < numbers.txt \n", message);
+}  
+
+
+void PrintNumber(lnumber number) {
+
+    unsigned long i = number.array_length - number.current_array_length;
+    
+    printf("\nNumber: \n");
+
+    for (i; i < number.array_length; i++)
+        if (isNumber(number.n[i]) == '1'){
+            printf("%c",number.n[i]);
+        }
+    
+    printf("\n");
+    printf("\nArray_length: %ld ", number.array_length);
+    printf("\nCurrent_array_length: %ld \n\n", number.current_array_length);
+}
+
+lnumber LRM3(lnumber n1, lnumber n2, long p) {
+    long i, s, rem;
+    long total_steps, last_steps = 0;
+
+    lnumber result, x_aux, y_aux, acum_pow2;
+
+    pthread_t *thread;
+    pthread_attr_t attribute;
+    struct Message **m;
+    void *exit_status; 
+
+    total_steps = TotalSteps(n1);
 
         if (total_steps < p) // special case when total_steps < threads
             p = total_steps; 
@@ -184,51 +254,8 @@ int main(int argc, char **argv) {
             result = LargeSum12(result, m[i]->result, result);
             free(m[i]->result.n);
         }
-        
-        PrintNumber(result);
-    }
-   else
-      Usage(argv[0]);
-}
 
-
-lnumber InitLargeNumber(char *num, int array_length, int current_array_length, int num_length){
-    
-    int i, j, k = 0;
-    lnumber number;
-    number.n = calloc(array_length,sizeof(char)); // allocate memory
-    number.array_length = array_length;
-    number.current_array_length = current_array_length;
-
-    for(i = number.array_length-1, j = num_length-1, k; k < current_array_length; i = i - 1, j = j - 1, k = k + 1)
-            number.n[i] = num[j];
-
-    return number;
-}
-
-/*
- * 
- */
-void Usage(char *message) {
-  
-    printf("\nUsage: %s < numbers.txt \n", message);
-}  
-
-
-void PrintNumber(lnumber number) {
-
-    unsigned long i = number.array_length - number.current_array_length;
-    
-    printf("\nNumber: \n");
-
-    for (i; i < number.array_length; i++)
-        if (isNumber(number.n[i]) == '1'){
-            printf("%c",number.n[i]);
-        }
-    
-    printf("\n");
-    printf("\nArray_length: %ld ", number.array_length);
-    printf("\nCurrent_array_length: %ld \n\n", number.current_array_length);
+        return result;
 }
 
 /*
@@ -282,7 +309,7 @@ void *PLargeRussianMult(void *p) {
     m = (struct Message *) p;
 
     lnumber result, n2_new; 
-    int i = 0, j;
+    int i = 0;
 
     result = InitLargeNumber("0", m->x.array_length + m->y.array_length, 1, 1);
     n2_new = InitLargeNumber(m->y.n, m->x.array_length + m->y.array_length, m->y.current_array_length, m->y.array_length);

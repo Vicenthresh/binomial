@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
 typedef struct large_number //estructura de datos utilizada
 {
@@ -50,7 +51,8 @@ int IsBiggerDiv(lnumber n1, lnumber n2);
 int main(int argc, char **argv) {
 
     lnumber n1, n2, result;
-    long len1 = 0, len2 = 0, c;
+    long len1 = 0, len2 = 0, c, runs,i;
+    double stime;
 
 	if ( argc == 1 ) {
 
@@ -70,11 +72,11 @@ int main(int argc, char **argv) {
 
         char num1[len1];
         scanf("%s", num1); 
-        n1 = InitLargeNumber(num1, len1, len1, len1);
+        //n1 = InitLargeNumber(num1, len1, len1, len1);
 
         char num2[len2];
         scanf("%s", num2);
-        n2 = InitLargeNumber(num2, len2, len2, len2);
+        //n2 = InitLargeNumber(num2, len2, len2, len2);
 
         result = InitLargeNumber("0", n2.current_array_length, 1, 1);
 
@@ -88,8 +90,17 @@ int main(int argc, char **argv) {
 
         //PrintNumber(result);
         //printf("\n\n%s \nx \n%s= \n ", n1.n, n2.n);
-        result = LargeRussianMult2(n1, n2, 0, 0);
+        runs = 10000;
+        clock_t cl = clock();
+        
+        for(i = 0; i < runs; i++){
+            n1 = InitLargeNumber(num1, len1, len1, len1);
+            n2 = InitLargeNumber(num2, len2, len2, len2);
+            result = LargeRussianMult2(n1, n2, 0, 0);
+        }
+        stime = (((double)clock()-cl)/CLOCKS_PER_SEC)/(double)runs;
         PrintNumber(result);
+        printf("Tiempo transcurrido SMult: %lf\n", stime);
         //printf("\n");
 
         /*
@@ -199,7 +210,7 @@ lnumber LargeRussianMult1(lnumber n1, lnumber n2, int free1, int free2) {
     if (free2 == 1)
         free(n2.n);
 
-    free(n2_new.n);
+    //free(n2_new.n);
 
     return result;
 }
